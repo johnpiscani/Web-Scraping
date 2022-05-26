@@ -70,7 +70,7 @@ def batterDataIntoObject(data, playerName):
 def main():
     # getting names of two players
     playerName1 = input("Enter first player to compare: ")
-    playerName2 = input("Enter first player to compare: ")
+    playerName2 = input("Enter second player to compare: ")
 
     url1 = getURL(playerName1)
     stats1 = getBatterData(url1)
