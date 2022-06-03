@@ -17,6 +17,7 @@ What I want to add:
 - add interativeness for inputting places (not through console)
 
 compareMLBplayers (updated June 3 2022) --> resolved issues for some players names not coming up
+
 Notes:
   Next time:
 - Add exception handling for when input does not work bc player doesnt play vs invalid user entry
