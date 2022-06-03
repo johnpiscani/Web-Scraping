@@ -3,6 +3,7 @@ my collection of projects where I work with web scraping
 
 firstScrapeLebron.py --> first attempt using Beautiful soup, take lebrons stats from Basketball reference and put it into a pandas DF
 
+-------------------------------------------------------------------------------------------------
 compareMLBplayers may 26 2022 --> first result of comparing mlb players, everything run through the console
 Notes:
 - can only compare batters, not pitchers
@@ -16,6 +17,7 @@ What I want to add:
 - add visualization for stats
 - add interativeness for inputting places (not through console)
 
+--------------------------------------------------------------------------------------------------
 compareMLBplayers (updated June 3 2022) --> resolved issues for some players names not coming up
 
 Notes:
