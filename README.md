@@ -21,7 +21,6 @@ Notes:
   Next time:
 - Add exception handling for when input does not work bc player doesnt play vs invalid user entry
 - How do I optimize user entry to prevent exception handling for happening?
-
-  Future:
+Future:
 - add to UI by using PyQT gui (just numbers at first)
 - add visulizations to stats (using graphs/charts/etc)
