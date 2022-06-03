@@ -3,7 +3,7 @@ import requests
 import re
 
 
-class Player:
+class Batter:
     def __init__(self, name, war, atBats, hits, homeRuns, average):
         self.name = name
         self.war = war
@@ -16,18 +16,39 @@ class Player:
         return 'Name: ' + self.name + '\nWAR: ' + self.war + '\nAt Bats: ' + self.atBats + '\nHits: ' + self.hits + '\nHome runs: ' + self.homeRuns + '\nAverage: ' + self.average
 
 
+class Pitcher:
+    def __init__(self, name, war, wins, losses, era):
+        self.name = name
+        self.war = war
+        self.wins = wins
+        self.losses = losses
+        self.era = era
+
+    def __str__(self):
+        return 'Name: ' + self.name + '\nWAR: ' + self.war + '\nWins: ' + self.wins + '\nLosses: ' + self.losses + '\nEarned Run Average: ' + self.era
+
+
 def getURL(playerName):
     begURL = 'https://www.baseball-reference.com/players/'
     names = playerName.split()
     letter = names[1][0].lower()
-    midURL = begURL + letter + '/'
-    lastAbr = names[1][0:5].lower()
-    firstAbr = names[0][0:2].lower()
-    URL = midURL + lastAbr + firstAbr + '01.shtml'
-    return URL
+    lastNamesURL = begURL + letter
+    page = requests.get(lastNamesURL)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    div = soup.find('div', attrs={'class': 'section_content'})
+    names = div.find_all('a')
+    optionList = []
+    for i in names:
+        if playerName in i.text:
+            optionList.append(i)
+    brokenURL = optionList[0]
+    brokenURL = str(brokenURL)
+    endURL = brokenURL.split('"')
+    urlOut = 'https://www.baseball-reference.com' + endURL[1]
+    return urlOut
 
 
-def getBatterData(userURL):
+def getPlayerData(userURL):
     page = requests.get(userURL)
     soup = BeautifulSoup(page.content, 'html.parser')
     # div which has summary of 2022 and career stats
@@ -56,6 +77,16 @@ def getBatterData(userURL):
     return data
 
 
+def pitcherDataIntoObject(data, playerName):
+    n = playerName
+    wa = data[0]
+    wi = data[1]
+    l = data[2]
+    e = data[3]
+    player = Pitcher(n, wa, wi, l, e)
+    return player
+
+
 def batterDataIntoObject(data, playerName):
     n = playerName
     w = data[0]
@@ -63,24 +94,39 @@ def batterDataIntoObject(data, playerName):
     hi = data[2]
     ho = data[3]
     av = data[4]
-    player1 = Player(n, w, at, hi, ho, av)
+    player1 = Batter(n, w, at, hi, ho, av)
     return player1
 
 
 def main():
-    # getting names of two players
+    # see if comparing pitchers or batters
+    print('Would you like to compare pitchers or batters from the 2022 season?')
+    choice = input('Enter "p" for pitchers and "b" for batters: ')
+    print('Please enter the players first and last name. Nicknames will not be accepted')
     playerName1 = input("Enter first player to compare: ")
     playerName2 = input("Enter second player to compare: ")
-
-    url1 = getURL(playerName1)
-    stats1 = getBatterData(url1)
-    comp1 = batterDataIntoObject(stats1, playerName1)
-    print(comp1.__str__())
-
-    url2 = getURL(playerName2)
-    stats2 = getBatterData(url2)
-    comp2 = batterDataIntoObject(stats2, playerName2)
-    print(comp2.__str__())
+    if choice == 'b':
+        # player 1
+        url1 = getURL(playerName1)
+        stats1 = getPlayerData(url1)
+        comp1 = batterDataIntoObject(stats1, playerName1)
+        print(comp1.__str__())
+        # player 2
+        url2 = getURL(playerName2)
+        stats2 = getPlayerData(url2)
+        comp2 = batterDataIntoObject(stats2, playerName2)
+        print(comp2.__str__())
+    elif choice == 'p':
+        # player 1
+        url1 = getURL(playerName1)
+        stats1 = getPlayerData(url1)
+        comp1 = pitcherDataIntoObject(stats1, playerName1)
+        print(comp1.__str__())
+        # player 2
+        url2 = getURL(playerName2)
+        stats2 = getPlayerData(url2)
+        comp2 = pitcherDataIntoObject(stats2, playerName2)
+        print(comp2.__str__())
 
 
 main()
