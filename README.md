@@ -28,3 +28,11 @@ Notes:
 Future:
 - add to UI by using PyQT gui (just numbers at first)
 - add visulizations to stats (using graphs/charts/etc)
+
+--------------------------------------------------------------------------------------------------
+compareMLBplayers (updated June 7 2022) --> made loop so if error, user can reinput names or p/b, prevents code from ending because user entry is wrong or there is a problem getting website/data
+
+Next Time:
+- work on TKinter mini projects to put this project into a GUI
+Future:
+- add visulizations for numbers for easier comparing/reading
