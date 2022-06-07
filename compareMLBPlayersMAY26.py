@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+import pandas as pd
 
 
 class Batter:
@@ -31,6 +32,8 @@ class Pitcher:
 def getURL(playerName):
     begURL = 'https://www.baseball-reference.com/players/'
     names = playerName.split()
+    firstName = names[0]
+    lastName = names[1]
     letter = names[1][0].lower()
     lastNamesURL = begURL + letter
     page = requests.get(lastNamesURL)
@@ -39,7 +42,7 @@ def getURL(playerName):
     names = div.find_all('a')
     optionList = []
     for i in names:
-        if playerName in i.text:
+        if firstName in i.text and lastName in i.text:
             optionList.append(i)
     brokenURL = optionList[0]
     brokenURL = str(brokenURL)
@@ -48,13 +51,17 @@ def getURL(playerName):
     return urlOut
 
 
+def checkBatter(playerName):
+    playersDF = pd.read_csv('battersNamesAndTeams.csv')
+
+
 def getPlayerData(userURL):
     page = requests.get(userURL)
     soup = BeautifulSoup(page.content, 'html.parser')
     # div which has summary of 2022 and career stats
     div = soup.find('div', attrs={"class": 'p1'})
     # finding all p tags within this div
-    pList = div.find_all('p', {'class':False, 'id':False})
+    pList = div.find_all('p', {'class': False, 'id': False})
     removeList = []
     # adds all career stats to list
     for x in range(len(pList)):
@@ -100,33 +107,44 @@ def batterDataIntoObject(data, playerName):
 
 def main():
     # see if comparing pitchers or batters
-    print('Would you like to compare pitchers or batters from the 2022 season?')
-    choice = input('Enter "p" for pitchers and "b" for batters: ')
-    print('Please enter the players first and last name. Nicknames will not be accepted')
-    playerName1 = input("Enter first player to compare: ")
-    playerName2 = input("Enter second player to compare: ")
-    if choice == 'b':
-        # player 1
-        url1 = getURL(playerName1)
-        stats1 = getPlayerData(url1)
-        comp1 = batterDataIntoObject(stats1, playerName1)
-        print(comp1.__str__())
-        # player 2
-        url2 = getURL(playerName2)
-        stats2 = getPlayerData(url2)
-        comp2 = batterDataIntoObject(stats2, playerName2)
-        print(comp2.__str__())
-    elif choice == 'p':
-        # player 1
-        url1 = getURL(playerName1)
-        stats1 = getPlayerData(url1)
-        comp1 = pitcherDataIntoObject(stats1, playerName1)
-        print(comp1.__str__())
-        # player 2
-        url2 = getURL(playerName2)
-        stats2 = getPlayerData(url2)
-        comp2 = pitcherDataIntoObject(stats2, playerName2)
-        print(comp2.__str__())
+    run = True
+    while run:
+        try:
+            print('Would you like to compare pitchers or batters from the 2022 season?')
+            choice = input('Enter "p" for pitchers and "b" for batters: ')
+            print('Please enter the players first and last name. Nicknames will not be accepted')
+            playerName1 = input("Enter first player to compare: ")
+            playerName2 = input("Enter second player to compare: ")
+            if choice.lower() == 'b':
+                # player 1
+                url1 = getURL(playerName1)
+                stats1 = getPlayerData(url1)
+                comp1 = batterDataIntoObject(stats1, playerName1)
+                print(comp1.__str__())
+                # player 2
+                url2 = getURL(playerName2)
+                stats2 = getPlayerData(url2)
+                comp2 = batterDataIntoObject(stats2, playerName2)
+                print(comp2.__str__())
+            elif choice.lower() == 'p':
+                # player 1
+                url1 = getURL(playerName1)
+                stats1 = getPlayerData(url1)
+                comp1 = pitcherDataIntoObject(stats1, playerName1)
+                print(comp1.__str__())
+                # player 2
+                url2 = getURL(playerName2)
+                stats2 = getPlayerData(url2)
+                comp2 = pitcherDataIntoObject(stats2, playerName2)
+                print(comp2.__str__())
+            else:
+                print('You entered an incorrect choice for batter/pitcher. Please try again!')
+                run = True
+        except:
+            print("Sorry, we have encountered an error. Please ensure you are spelling the name correctly and not using a nickname.")
+            run = True
+        else:
+            run = False
 
 
 main()
