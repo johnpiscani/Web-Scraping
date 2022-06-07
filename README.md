@@ -34,5 +34,6 @@ compareMLBplayers (updated June 7 2022) --> made loop so if error, user can rein
 
 Next Time:
 - work on TKinter mini projects to put this project into a GUI
+
 Future:
 - add visulizations for numbers for easier comparing/reading
