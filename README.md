@@ -37,3 +37,4 @@ Next Time:
 
 Future:
 - add visulizations for numbers for easier comparing/reading
+- run app thru icon on desktop, or put in brothers fantasy baseball website
