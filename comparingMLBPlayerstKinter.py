@@ -103,6 +103,12 @@ def batterDataIntoObject(data, playerName):
 
 
 def comparePlayers():
+    player1StatLabel = Label(root, text="")
+    player1StatLabel.grid(row=6, column=1)
+    player2StatLabel = Label(root, text="")
+    player2StatLabel.grid(row=6, column=2)
+    player1StatLabel.config(text="")
+    player2StatLabel.config(text="")
     playerName1 = playerOneInput.get()
     playerName2 = playerTwoInput.get()
     choice = var.get()
@@ -120,10 +126,8 @@ def comparePlayers():
         url2 = getURL(playerName2)
         stats2 = getPlayerData(url2)
         player2Obj = pitcherDataIntoObject(stats2, playerName2)
-    player1StatLabel = Label(root, text=player1Obj.__str__())
-    player1StatLabel.grid(row=6, column=1)
-    player2StatLabel = Label(root, text=player2Obj.__str__())
-    player2StatLabel.grid(row=6, column=2)
+    player1StatLabel.config(text=player1Obj.__str__())
+    player2StatLabel.config(text=player2Obj.__str__())
 
 
 root = Tk()
