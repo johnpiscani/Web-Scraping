@@ -38,3 +38,13 @@ Next Time:
 Future:
 - add visulizations for numbers for easier comparing/reading
 - run app thru icon on desktop, or put in brothers fantasy baseball website
+
+--------------------------------------------------------------------------------------------------
+compareMLBplayers (added version with tKinter GUI) --> new file added to put th eoriginal project into a GUI
+
+Next time:
+- fix errors occuring w/ try blocks and exceptions
+
+Future:
+- Clean/Polish up
+- add graphs?
