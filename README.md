@@ -48,3 +48,10 @@ Next time:
 Future:
 - Clean/Polish up
 - add graphs?
+
+--------------------------------------------------------------------------------------------------
+compareMLBplayers (thu june 9) --> fixed up exceptio handling
+
+Notes:
+- Done w/ project besides possibly improving design
+- could add better exception handling
