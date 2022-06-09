@@ -15,7 +15,7 @@ class Batter:
         self.average = average
 
     def __str__(self):
-        return 'Name: ' + self.name + '\nWAR: ' + self.war + '\nAt Bats: ' + self.atBats + '\nHits: ' + self.hits + '\nHome runs: ' + self.homeRuns + '\nAverage: ' + self.average
+        return self.name + '\nWAR: ' + self.war + '\nAt Bats: ' + self.atBats + '\nHits: ' + self.hits + '\nHome runs: ' + self.homeRuns + '\nAverage: ' + self.average
 
 
 class Pitcher:
@@ -27,7 +27,7 @@ class Pitcher:
         self.era = era
 
     def __str__(self):
-        return 'Name: ' + self.name + '\nWAR: ' + self.war + '\nWins: ' + self.wins + '\nLosses: ' + self.losses + '\nEarned Run Average: ' + self.era
+        return self.name + '\nWAR: ' + self.war + '\nWins: ' + self.wins + '\nLosses: ' + self.losses + '\nEarned Run Average: ' + self.era
 
 
 def getURL(playerName):
@@ -102,6 +102,15 @@ def batterDataIntoObject(data, playerName):
     return player1
 
 
+def clearStats():
+    player1StatLabel = Label(root, text="")
+    player1StatLabel.grid(row=6, column=1)
+    player2StatLabel = Label(root, text="")
+    player2StatLabel.grid(row=6, column=2)
+    player1StatLabel.config(text="\t\t\t\n\t\t\t\n\t\t\t\n\t\t\t\n\t\t\t\n")
+    player2StatLabel.config(text="\t\t\t\n\t\t\t\n\t\t\t\n\t\t\t\n\t\t\t\n")
+
+
 def comparePlayers():
     player1StatLabel = Label(root, text="")
     player1StatLabel.grid(row=6, column=1)
@@ -113,21 +122,35 @@ def comparePlayers():
     playerName2 = playerTwoInput.get()
     choice = var.get()
     if choice == 1:
-        url1 = getURL(playerName1)
-        stats1 = getPlayerData(url1)
-        player1Obj = batterDataIntoObject(stats1, playerName1)
-        url2 = getURL(playerName2)
-        stats2 = getPlayerData(url2)
-        player2Obj = batterDataIntoObject(stats2, playerName2)
+        try:
+            url1 = getURL(playerName1)
+            stats1 = getPlayerData(url1)
+            player1Obj = batterDataIntoObject(stats1, playerName1)
+            player1StatLabel.config(text=player1Obj.__str__())
+        except:
+            player1StatLabel.config(text='Error')
+        try:
+            url2 = getURL(playerName2)
+            stats2 = getPlayerData(url2)
+            player2Obj = batterDataIntoObject(stats2, playerName2)
+            player2StatLabel.config(text=player2Obj.__str__())
+        except:
+            player2StatLabel.config(text='Error')
     elif choice == 2:
-        url1 = getURL(playerName1)
-        stats1 = getPlayerData(url1)
-        player1Obj = pitcherDataIntoObject(stats1, playerName1)
-        url2 = getURL(playerName2)
-        stats2 = getPlayerData(url2)
-        player2Obj = pitcherDataIntoObject(stats2, playerName2)
-    player1StatLabel.config(text=player1Obj.__str__())
-    player2StatLabel.config(text=player2Obj.__str__())
+        try:
+            url1 = getURL(playerName1)
+            stats1 = getPlayerData(url1)
+            player1Obj = pitcherDataIntoObject(stats1, playerName1)
+            player1StatLabel.config(text=player1Obj.__str__())
+        except:
+            player1StatLabel.config(text='Error')
+        try:
+            url2 = getURL(playerName2)
+            stats2 = getPlayerData(url2)
+            player2Obj = pitcherDataIntoObject(stats2, playerName2)
+            player2StatLabel.config(text=player2Obj.__str__())
+        except:
+            player2StatLabel.config(text='Error')
 
 
 root = Tk()
@@ -148,7 +171,7 @@ batterRadio = Radiobutton(root, text='Batter', variable=var, value=1)
 pitcherRadio = Radiobutton(root, text='Pitcher', variable=var, value=2)
 
 compareButton = Button(root, text='Compare Players', command=comparePlayers)
-
+clearButton = Button(root, text='Clear', command=clearStats)
 # putting widgets into root on grid
 intro1.grid(row=0, column=1)
 intro2.grid(row=1, column=1)
@@ -163,4 +186,5 @@ player2Label.grid(row=4, column=0)
 playerTwoInput.grid(row=4, column=1)
 
 compareButton.grid(row=5, column=1)
+clearButton.grid(row=5, column=2)
 root.mainloop()
